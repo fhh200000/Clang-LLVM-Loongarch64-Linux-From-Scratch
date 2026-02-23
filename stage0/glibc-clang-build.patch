@@ -1,0 +1,371 @@
+diff -r -d -u glibc-2.43/elf/dl-load.c glibc-2.43-2/elf/dl-load.c
+--- glibc-2.43/elf/dl-load.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/elf/dl-load.c	2026-02-11 13:51:22.051872053 +0000
+@@ -16,7 +16,6 @@
+    You should have received a copy of the GNU Lesser General Public
+    License along with the GNU C Library; if not, see
+    <https://www.gnu.org/licenses/>.  */
+-
+ #include <elf.h>
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -33,7 +32,8 @@
+ #include <sys/types.h>
+ #include <gnu/lib-names.h>
+ #include <dl-tunables.h>
+-
++#undef bcmp
++__attribute__ ((weak)) inline int bcmp(const void *str1, const void *str2, size_t n) {return memcmp(str1,str2,n);}
+ /* Type for the buffer we put the ELF header and hopefully the program
+    header.  This buffer does not really have to be too large.  In most
+    cases the program header follows the ELF header directly.  If this
+diff -r -d -u glibc-2.43/manual/Makefile glibc-2.43-2/manual/Makefile
+--- glibc-2.43/manual/Makefile	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/manual/Makefile	2026-02-11 14:38:53.414894565 +0000
+@@ -186,15 +186,15 @@
+ install-data subdir_install: install
+ # Generated files requiring python: libm-err.texi
+ # Generated files requiring perl: summary.texi
+-ifneq ($(PERL),no)
+-ifneq ($(strip $(MAKEINFO)),:)
+-install: $(inst_infodir)/libc.info
+-	@if $(SHELL) -c '$(INSTALL_INFO) --version' >/dev/null 2>&1; then \
+-	 test -f $(inst_infodir)/dir || $(INSTALL_DATA) dir $(inst_infodir);\
+-	 $(INSTALL_INFO) --info-dir=$(inst_infodir) $(inst_infodir)/libc.info;\
+-	else : ; fi
+-endif
+-endif
++# ifneq ($(PERL),no)
++#ifneq ($(strip $(MAKEINFO)),:)
++#install: $(inst_infodir)/libc.info
++#	@if $(SHELL) -c '$(INSTALL_INFO) --version' >/dev/null 2>&1; then \
++#	 test -f $(inst_infodir)/dir || $(INSTALL_DATA) dir $(inst_infodir);\
++#	 $(INSTALL_INFO) --info-dir=$(inst_infodir) $(inst_infodir)/libc.info;\
++#	else : ; fi
++#endif
++#endif
+ # Catchall implicit rule for other installation targets from the parent.
+ install-%: ;
+ 
+diff -r -d -u glibc-2.43/string/string.h glibc-2.43-2/string/string.h
+--- glibc-2.43/string/string.h	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/string/string.h	2026-02-11 13:25:59.901223734 +0000
+@@ -75,6 +75,7 @@
+ extern int memcmp (const void *__s1, const void *__s2, size_t __n)
+      __THROW __attribute_pure__ __nonnull ((1, 2));
+ 
++#define bcmp(s1,s2,n) memcmp(s1,s2,n)
+ /* Compare N bytes of S1 and S2.  Return zero if S1 and S2 are equal.
+    Return some non-zero value otherwise.
+ 
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/e_scalb.c glibc-2.43-2/sysdeps/loongarch/fpu/e_scalb.c
+--- glibc-2.43/sysdeps/loongarch/fpu/e_scalb.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/e_scalb.c	2026-02-11 14:04:36.793931120 +0000
+@@ -25,16 +25,17 @@
+ double
+ __ieee754_scalb (double x, double fn)
+ {
+-  int x_cond;
+-  int fn_cond;
++  float x_cond;
++  float fn_cond;
++  _Static_assert(sizeof(int) == sizeof (float), "incorrect int size!");
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+   asm volatile ("fclass.d \t%0, %1" : "=f" (fn_cond) : "f" (fn));
+ 
+-  if (__glibc_unlikely(( x_cond | fn_cond) & _FCLASS_NAN))
++  if (__glibc_unlikely(( *(int*)&x_cond | *(int*)&fn_cond) & _FCLASS_NAN))
+       return x * fn;
+-  else if (__glibc_unlikely(fn_cond & _FCLASS_INF))
++  else if (__glibc_unlikely(*(int*)&fn_cond & _FCLASS_INF))
+     {
+-      if (!(fn_cond & _FCLASS_MINF))
++      if (!(*(int*)&fn_cond & _FCLASS_MINF))
+ 	  return x * fn;
+       else
+ 	  return x / -fn;
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/e_scalbf.c glibc-2.43-2/sysdeps/loongarch/fpu/e_scalbf.c
+--- glibc-2.43/sysdeps/loongarch/fpu/e_scalbf.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/e_scalbf.c	2026-02-11 14:11:42.068356130 +0000
+@@ -25,16 +25,17 @@
+ float
+ __ieee754_scalbf (float x, float fn)
+ {
+-  int x_cond;
+-  int fn_cond;
++  float x_cond;
++  float fn_cond;
++  _Static_assert(sizeof(float)==sizeof(int),"Unaligned int!");
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+   asm volatile ("fclass.s \t%0, %1" : "=f" (fn_cond) : "f" (fn));
+ 
+-  if (__glibc_unlikely(( x_cond | fn_cond) & _FCLASS_NAN))
++  if (__glibc_unlikely(( *(int*)& x_cond | *(int*)&fn_cond) & _FCLASS_NAN))
+       return x * fn;
+-  else if (__glibc_unlikely(fn_cond & _FCLASS_INF))
++  else if (__glibc_unlikely(*(int*)&fn_cond & _FCLASS_INF))
+     {
+-      if (!(fn_cond & _FCLASS_MINF))
++      if (!(*(int*)&fn_cond & _FCLASS_MINF))
+ 	  return x * fn;
+       else
+ 	  return x / -fn;
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/math-barriers.h glibc-2.43-2/sysdeps/loongarch/fpu/math-barriers.h
+--- glibc-2.43/sysdeps/loongarch/fpu/math-barriers.h	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/math-barriers.h	2026-02-11 13:59:58.237109415 +0000
+@@ -21,7 +21,7 @@
+ 
+ /* Generic code forces values to memory; we don't need to do that.  */
+ #define math_opt_barrier(x)					\
+-  ({ __typeof (x) __x = (x); __asm ("" : "+frm" (__x)); __x; })
++  ({ __typeof (x) __x = (x); /*__asm ("" : "+frm" (__x)); __x;*/ __asm("dbar 0"); __x; })
+ #define math_force_eval(x)						\
+   ({ __typeof (x) __x = (x); __asm __volatile__ ("" : : "frm" (__x)); })
+ 
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_finite.c glibc-2.43-2/sysdeps/loongarch/fpu/s_finite.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_finite.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_finite.c	2026-02-10 23:35:30.740382395 +0000
+@@ -22,9 +22,10 @@
+ int
+ __finite (double x)
+ {
+-  int x_cond;
++  double x_cond;
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return  x_cond & ~(_FCLASS_INF | _FCLASS_NAN);
++  _Static_assert(sizeof(double)==sizeof(long long),"unpacked double");
++  return  (*(long long*)&x_cond) & ~(_FCLASS_INF | _FCLASS_NAN);
+ }
+ hidden_def (__finite)
+ weak_alias (__finite, finite)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_finitef.c glibc-2.43-2/sysdeps/loongarch/fpu/s_finitef.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_finitef.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_finitef.c	2026-02-10 23:37:46.380965386 +0000
+@@ -22,9 +22,11 @@
+ int
+ __finitef (float x)
+ {
+-  int x_cond;
++  float x_cond;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return  x_cond & ~(_FCLASS_INF | _FCLASS_NAN);
++  _Static_assert(sizeof(float)==sizeof(int),"unpacked double");
++
++  return ( *(int*)&x_cond) & ~(_FCLASS_INF | _FCLASS_NAN);
+ }
+ hidden_def (__finitef)
+ weak_alias (__finitef, finitef)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_fpclassify.c glibc-2.43-2/sysdeps/loongarch/fpu/s_fpclassify.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_fpclassify.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_fpclassify.c	2026-02-11 14:08:34.811915956 +0000
+@@ -22,16 +22,17 @@
+ int
+ __fpclassify (double x)
+ {
+-  int cls;
++  float cls;
++  _Static_assert(sizeof(float) == sizeof(int),"Unlined int!");
+   asm volatile ("fclass.d \t%0, %1" : "=f" (cls) : "f" (x));
+ 
+-  if (__glibc_likely (!!(cls & _FCLASS_NORM)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_NORM)))
+     return FP_NORMAL;
+-  if (__glibc_likely (!!(cls & _FCLASS_ZERO)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_ZERO)))
+     return FP_ZERO;
+-  if (__glibc_likely (!!(cls & _FCLASS_SUBNORM)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_SUBNORM)))
+     return FP_SUBNORMAL;
+-  if (__glibc_likely (!!(cls & _FCLASS_INF)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_INF)))
+     return FP_INFINITE;
+   return FP_NAN;
+ }
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_fpclassifyf.c glibc-2.43-2/sysdeps/loongarch/fpu/s_fpclassifyf.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_fpclassifyf.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_fpclassifyf.c	2026-02-11 14:13:55.344175270 +0000
+@@ -22,16 +22,16 @@
+ int
+ __fpclassifyf (float x)
+ {
+-  int cls;
++  float cls;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (cls) : "f" (x));
+ 
+-  if (__glibc_likely (!!(cls & _FCLASS_NORM)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_NORM)))
+     return FP_NORMAL;
+-  if (__glibc_likely (!!(cls & _FCLASS_ZERO)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_ZERO)))
+     return FP_ZERO;
+-  if (__glibc_likely (!!(cls & _FCLASS_SUBNORM)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_SUBNORM)))
+     return FP_SUBNORMAL;
+-  if (__glibc_likely (!!(cls & _FCLASS_INF)))
++  if (__glibc_likely (!!(*(int*)&cls & _FCLASS_INF)))
+     return FP_INFINITE;
+   return FP_NAN;
+ }
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_isinf.c glibc-2.43-2/sysdeps/loongarch/fpu/s_isinf.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_isinf.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_isinf.c	2026-02-10 23:35:17.763953052 +0000
+@@ -22,9 +22,10 @@
+ int
+ __isinf (double x)
+ {
+-  int x_cond;
++  double x_cond;
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return -((x_cond & _FCLASS_MINF) ? 1 : 0) | ((x_cond & _FCLASS_PINF) ? 1 : 0);
++  _Static_assert(sizeof(double)==sizeof(long long),"unpacked double");
++  return -(((*(long long*)&x_cond) & _FCLASS_MINF) ? 1 : 0) | (((*(long long*)&x_cond) & _FCLASS_PINF) ? 1 : 0);
+ }
+ hidden_def (__isinf)
+ weak_alias (__isinf, isinf)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_isinff.c glibc-2.43-2/sysdeps/loongarch/fpu/s_isinff.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_isinff.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_isinff.c	2026-02-10 23:39:23.518140184 +0000
+@@ -22,9 +22,10 @@
+ int
+ __isinff (float x)
+ {
+-  int x_cond;
++  float x_cond;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return -((x_cond & _FCLASS_MINF) ? 1 : 0) | ((x_cond & _FCLASS_PINF) ? 1 : 0);
++  _Static_assert(sizeof(float)==sizeof(int),"unpacked double");
++  return -(( (*(int*)&x_cond) & _FCLASS_MINF) ? 1 : 0) | (( (*(int*)&x_cond) & _FCLASS_PINF) ? 1 : 0);
+ }
+ hidden_def (__isinff)
+ weak_alias (__isinff, isinff)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_isnan.c glibc-2.43-2/sysdeps/loongarch/fpu/s_isnan.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_isnan.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_isnan.c	2026-02-10 23:36:17.603341367 +0000
+@@ -22,10 +22,10 @@
+ int
+ __isnan (double x)
+ {
+-  int x_cond;
++  double x_cond;
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+-
+-  return (x_cond & _FCLASS_NAN) != 0;
++ _Static_assert(sizeof(double)==sizeof(long long),"unpacked double");
++  return ((*(long long*)&x_cond) & _FCLASS_NAN) != 0;
+ }
+ hidden_def (__isnan)
+ weak_alias (__isnan, isnan)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_isnanf.c glibc-2.43-2/sysdeps/loongarch/fpu/s_isnanf.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_isnanf.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_isnanf.c	2026-02-10 23:40:05.992182787 +0000
+@@ -22,10 +22,10 @@
+ int
+ __isnanf (float x)
+ {
+-  int x_cond;
++  float x_cond;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+-
+-  return (x_cond & _FCLASS_NAN) != 0;
++  _Static_assert(sizeof(float)==sizeof(int),"unpacked double");
++  return ((*(int*)&x_cond) & _FCLASS_NAN) != 0;
+ }
+ hidden_def (__isnanf)
+ weak_alias (__isnanf, isnanf)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_issignaling.c glibc-2.43-2/sysdeps/loongarch/fpu/s_issignaling.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_issignaling.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_issignaling.c	2026-02-11 14:09:40.272716238 +0000
+@@ -22,8 +22,9 @@
+ int
+ __issignaling (double x)
+ {
+-  int x_cond;
++  float x_cond;
++  _Static_assert(sizeof(float) == sizeof(int),"Unaligned Int!");
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return (x_cond & _FCLASS_SNAN) != 0;
++  return (*(int*)&x_cond & _FCLASS_SNAN) != 0;
+ }
+ libm_hidden_def (__issignaling)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/s_issignalingf.c glibc-2.43-2/sysdeps/loongarch/fpu/s_issignalingf.c
+--- glibc-2.43/sysdeps/loongarch/fpu/s_issignalingf.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/s_issignalingf.c	2026-02-11 14:14:24.079208929 +0000
+@@ -22,8 +22,8 @@
+ int
+ __issignalingf (float x)
+ {
+-  int x_cond;
++  float x_cond;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+-  return (x_cond & _FCLASS_SNAN) != 0;
++  return (*(int*)&x_cond & _FCLASS_SNAN) != 0;
+ }
+ libm_hidden_def (__issignalingf)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/w_ilogb-impl.h glibc-2.43-2/sysdeps/loongarch/fpu/w_ilogb-impl.h
+--- glibc-2.43/sysdeps/loongarch/fpu/w_ilogb-impl.h	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/w_ilogb-impl.h	2026-02-11 14:06:55.272771297 +0000
+@@ -21,12 +21,13 @@
+ static inline RET_TYPE
+ IMPL_NAME (double x)
+ {
+-  int x_cond;
++  float x_cond;
++  _Static_assert(sizeof(float) == sizeof(int),"Unaligned size!");
+   asm volatile ("fclass.d \t%0, %1" : "=f" (x_cond) : "f" (x));
+ 
+-  if (__glibc_unlikely (x_cond & _FCLASS_ZERO))
++  if (__glibc_unlikely (*(int*)&x_cond & _FCLASS_ZERO))
+     return RET_INVALID (RET_LOGB0);
+-  else if (__glibc_unlikely (x_cond & ( _FCLASS_NAN | _FCLASS_INF)))
++  else if (__glibc_unlikely (*(int*)&x_cond & ( _FCLASS_NAN | _FCLASS_INF)))
+     return RET_INVALID (RET_LOGBNAN);
+   else
+     {
+diff -r -d -u glibc-2.43/sysdeps/loongarch/fpu/w_ilogbf-impl.h glibc-2.43-2/sysdeps/loongarch/fpu/w_ilogbf-impl.h
+--- glibc-2.43/sysdeps/loongarch/fpu/w_ilogbf-impl.h	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/fpu/w_ilogbf-impl.h	2026-02-11 14:12:35.465120968 +0000
+@@ -21,12 +21,12 @@
+ static inline RET_TYPE
+ IMPL_NAME (float x)
+ {
+-  int x_cond;
++  float x_cond;
+   asm volatile ("fclass.s \t%0, %1" : "=f" (x_cond) : "f" (x));
+ 
+-  if (__glibc_unlikely (x_cond & _FCLASS_ZERO))
++  if (__glibc_unlikely (*(int*)&x_cond & _FCLASS_ZERO))
+     return RET_INVALID (RET_LOGB0);
+-  else if (__glibc_unlikely (x_cond & ( _FCLASS_NAN | _FCLASS_INF)))
++  else if (__glibc_unlikely (*(int*)&x_cond & ( _FCLASS_NAN | _FCLASS_INF)))
+     return RET_INVALID (RET_LOGBNAN);
+   else
+     {
+diff -r -d -u glibc-2.43/sysdeps/loongarch/lp64/multiarch/memcmp.c glibc-2.43-2/sysdeps/loongarch/lp64/multiarch/memcmp.c
+--- glibc-2.43/sysdeps/loongarch/lp64/multiarch/memcmp.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/lp64/multiarch/memcmp.c	2026-02-11 13:48:27.037547669 +0000
+@@ -29,8 +29,8 @@
+ libc_ifunc_redirected (__redirect_memcmp, memcmp,
+ 		       IFUNC_SELECTOR ());
+ # undef bcmp
+-weak_alias (memcmp, bcmp)
+-
++//weak_alias (memcmp, bcmp)
++inline int bcmp(const void *str1, const void *str2, size_t n) {return memcmp(str1,str2,n);}
+ # undef __memcmpeq
+ strong_alias (memcmp, __memcmpeq)
+ libc_hidden_def (__memcmpeq)
+diff -r -d -u glibc-2.43/sysdeps/loongarch/lp64/multiarch/stpcpy.c glibc-2.43-2/sysdeps/loongarch/lp64/multiarch/stpcpy.c
+--- glibc-2.43/sysdeps/loongarch/lp64/multiarch/stpcpy.c	2026-01-23 20:54:00.000000000 +0000
++++ glibc-2.43-2/sysdeps/loongarch/lp64/multiarch/stpcpy.c	2026-02-10 23:47:17.340207039 +0000
+@@ -17,6 +17,10 @@
+    License along with the GNU C Library; if not, see
+    <https://www.gnu.org/licenses/>.  */
+ 
++#ifdef __clang__
++#pragma clang diagnostic ignored "-Wignored-attributes"
++#endif
++
+ /* Define multiple versions only for the definition in libc.  */
+ #if IS_IN (libc)
+ # define stpcpy __redirect_stpcpy
+
