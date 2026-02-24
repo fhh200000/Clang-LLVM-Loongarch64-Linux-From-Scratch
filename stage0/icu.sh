@@ -4,6 +4,10 @@ export SOURCE_VERSION="78.2"
 export SOURCE_NAME="icu/source"
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://github.com/unicode-org/icu/releases/download/release-${SOURCE_VERSION}/icu4c-${SOURCE_VERSION}-sources.tgz
+	tar -xf icu4c-${SOURCE_VERSION}-sources.tgz
+}
 
 prebuild() {
 	CC="clang --sysroot=${LFS}" CXX="clang++ --sysroot=${LFS} -stdlib=libc++" \

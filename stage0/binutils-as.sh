@@ -4,6 +4,10 @@ export SOURCE_VERSION="2.45"
 export SOURCE_NAME=binutils-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://sourceware.org/pub/binutils/releases/${SOURCE_NAME}.tar.xz
+	tar -xf ${SOURCE_NAME}.tar.xz
+}
 
 prebuild() {
 	CC="clang --sysroot=${LFS}" CXX="clang++ --sysroot=${LFS}" AR=llvm-ar \
@@ -16,6 +20,7 @@ prebuild() {
 		--disable-werror     \
 		--enable-64-bit-bfd  \
 		--enable-new-dtags   \
+		--with-debuginfod=no \
 		--enable-default-hash-style=gnu
 	return $?
 }

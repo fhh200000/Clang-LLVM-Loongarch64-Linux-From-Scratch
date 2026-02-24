@@ -4,6 +4,10 @@ export SOURCE_VERSION="2.8"
 export SOURCE_NAME=patch-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://ftp.gnu.org/gnu/patch/${SOURCE_NAME}.tar.xz
+	tar -xf ${SOURCE_NAME}.tar.xz
+}
 
 prebuild() {
 	CC="clang --sysroot=${LFS}" CXX="clang++ --sysroot=${LFS}" \

@@ -4,6 +4,10 @@ export SOURCE_VERSION="6.5-20250809"
 export SOURCE_NAME=ncurses-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+        wget https://invisible-mirror.net/archives/ncurses/current/${SOURCE_NAME}.tgz
+        tar -xf ${SOURCE_NAME}.tgz
+}
 
 prebuild() {
 	CC="clang --sysroot=$LFS" CXX="clang++ --sysroot=$LFS" \

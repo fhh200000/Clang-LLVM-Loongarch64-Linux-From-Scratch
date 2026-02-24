@@ -4,6 +4,11 @@ export SOURCE_VERSION=6.16.1
 export SOURCE_NAME=linux-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://www.kernel.org/pub/linux/kernel/v6.x/${SOURCE_NAME}.tar.xz
+	tar -xf ${SOURCE_NAME}.tar.xz
+}
+
 prebuild() {
         pushd ..
         make mrproper

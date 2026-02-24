@@ -4,6 +4,10 @@ export SOURCE_VERSION="4.4.1"
 export SOURCE_NAME=make-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://ftp.gnu.org/gnu/make/${SOURCE_NAME}.tar.gz
+	tar -xf ${SOURCE_NAME}.tar.gz
+}
 
 prebuild() {
 	CC="clang --sysroot=${LFS}" CXX="clang++ --sysroot=${LFS}" \

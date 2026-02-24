@@ -4,6 +4,12 @@ export SOURCE_VERSION=2.43
 export SOURCE_NAME=glibc-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://ftp.gnu.org/gnu/glibc/${SOURCE_NAME}.tar.xz
+	wget https://www.linuxfromscratch.org/patches/lfs/12.4/glibc-2.42-fhs-1.patch
+	tar -xf ${SOURCE_NAME}.tar.xz
+}
+
 prebuild() {
 	pushd ..
 	patch -Np1 -i ../glibc-2.42-fhs-1.patch

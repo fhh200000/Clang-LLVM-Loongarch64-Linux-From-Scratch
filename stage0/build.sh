@@ -1,8 +1,9 @@
 #!/bin/bash
 
-PACKAGES=("linux-header" "llvm-libs" "glibc" "m4" "ncurses" "bash" "coreutils-rs" "diffutils"
-	  "libseccomp" "file" "findutils" "gawk" "grep" "gzip" "make" "patch" "sed" "tar" "xz"
-	  "binutils-as" "zlib-ng" "zstd" "libelf" "libffi" "icu" "libxml" "llvm-bin")
+PACKAGES=("skeleton" "linux-header" "llvm-libs" "glibc" "m4" "ncurses" "bash" "coreutils-rs"
+	  "diffutils" "libseccomp" "file" "findutils" "gawk" "grep" "gzip" "make" "patch"
+	  "sed" "tar" "xz" "zstd" "binutils-as" "zlib-ng" "libelf" "libffi" "icu" "libxml"
+	  "llvm-bin")
 
 source ../settings.sh
 source ../common.sh

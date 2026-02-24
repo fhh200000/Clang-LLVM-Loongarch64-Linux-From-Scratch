@@ -4,6 +4,11 @@ export SOURCE_VERSION=21.1.8
 export SOURCE_NAME=llvm-project-${SOURCE_VERSION}.src
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://github.com/llvm/llvm-project/releases/download/llvmorg-${SOURCE_VERSION}/${SOURCE_NAME}.tar.xz
+	tar -xf ${SOURCE_NAME}.tar.xz
+}
+
 prebuild() {
 	ln -s $(which clang) cc
 	ln -s $(which clang++) c++
@@ -19,6 +24,8 @@ prebuild() {
 }
 
 build() {
+	# We must remove all LLVM binaries existing in $LFS. Otherwise the build will fail.
+	rm -rf $LFS/bin/llvm-*
 	PATH=$(pwd):$PATH ninja
 	return $?
 }

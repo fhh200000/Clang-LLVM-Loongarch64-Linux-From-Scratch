@@ -4,6 +4,18 @@
 # $2: Package name
 function prebuild_common {
 	echo "=== Stage$1 $2 ${SOURCE_VERSION} PREBUILD ==="
+	if [ ! -d "${SOURCE_DIR}/${SOURCE_NAME}" ]; then
+		echo "=== Stage$1 $2 ${SOURCE_VERSION} DOWNLOAD ==="
+		pushd ${SOURCE_DIR}
+		download
+		ret=$?
+		popd
+		if [ ! $ret -eq 0 ]; then
+			echo "=== Stage$1 $2 ${SOURCE_VESION} DOWNLOAD FAIL ==="
+			return $ret
+		fi
+	fi
+
 	mkdir -p ${SOURCE_DIR}/${SOURCE_NAME}/build_stage$1_$2_${SOURCE_VERSION}
 	pushd ${SOURCE_DIR}/${SOURCE_NAME}/build_stage$1_$2_${SOURCE_VERSION}
 	if [ -f "PREBUILD_COMPLETE" ]; then

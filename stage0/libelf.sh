@@ -4,6 +4,10 @@ export SOURCE_VERSION="0.193"
 export SOURCE_NAME=elfutils-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+	wget https://sourceware.org/ftp/elfutils/${SOURCE_VERSION}/${SOURCE_NAME}.tar.bz2
+	tar -xf ${SOURCE_NAME}.tar.bz2
+}
 
 prebuild() {
 	CC="clang --sysroot=${LFS} -Wno-incompatible-pointer-types-discards-qualifiers -Wno-unused-parameter" CXX="clang++ --sysroot=${LFS} -Wno-incompatible-pointer-types-discards-qualifiers -Wno-unused-parameter" \

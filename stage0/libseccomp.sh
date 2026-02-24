@@ -4,6 +4,10 @@ export SOURCE_VERSION="2.6.0"
 export SOURCE_NAME=libseccomp-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
+download() {
+        wget https://github.com/seccomp/libseccomp/releases/download/v${SOURCE_VERSION}/${SOURCE_NAME}.tar.gz
+        tar -xf ${SOURCE_NAME}.tar.gz
+}
 
 prebuild() {
 	CC="clang --sysroot=$LFS" CXX="clang++ --sysroot=$LFS" \
