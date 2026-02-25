@@ -15,6 +15,7 @@ Scripts to build Clang/LLVM-based (No GCC at all) LFS on Loongarch64.
 + libc++
 + patchelf
 + CMake/make
++ meson/ninja
 + flex/bison
 + gperf
 + pkgconf

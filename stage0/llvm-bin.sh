@@ -37,6 +37,11 @@ install() {
 		ln -sfv llvm-${name} ${LFS}/usr/bin/${name} 
 	done
 	ln -sfv llvm-cxxfilt ${LFS}/usr/bin/c++filt
+	ln -sfv clang ${LFS}/usr/bin/cc
+	ln -sfv clang ${LFS}/usr/bin/cpp
+	ln -sfv ../bin/clang ${LFS}/usr/lib/cpp
+	ln -sfv clang++ ${LFS}/usr/bin/c++
+	ln -sfv ld.lld ${LFS}/usr/bin/ld
 	return $?	
 }
 
