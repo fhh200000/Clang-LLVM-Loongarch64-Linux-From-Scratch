@@ -17,7 +17,7 @@ prebuild() {
 	PATH=$(pwd):$PATH  CC="clang -rtlib=compiler-rt --sysroot=${LFS} -Wno-unused-command-line-argument" CXX="clang++ -rtlib=compiler-rt -stdlib=libc++ --sysroot=${LFS} -Wno-unused-command-line-argument" cmake \
 	-DCMAKE_BUILD_TYPE=Release -DLLVM_USE_LINKER=lld -DLLVM_TARGETS_TO_BUILD="LoongArch;AMDGPU" \
 	-DLLVM_ENABLE_PROJECTS="lld;clang" -DLLVM_ENABLE_RUNTIMES="" -DCMAKE_SYSROOT=${LFS}  \
-	-DLLVM_HOST_TRIPLE=loongarch64-unknown-linux-gnu  -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DCLANG_DEFAULT_RTLIB=compiler-rt -DCLANG_DEFAULT_PIE_ON_LINUX=ON \
+	-DLLVM_HOST_TRIPLE=loongarch64-unknown-linux-gnu  -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DCLANG_DEFAULT_RTLIB=compiler-rt -DCLANG_DEFAULT_UNWINDLIB=libunwind -DCLANG_DEFAULT_PIE_ON_LINUX=ON \
 	-DCMAKE_INSTALL_PREFIX=/usr  -DLIBCXXABI_USE_LLVM_UNWINDER=OFF  \
 	-S ../llvm -D CMAKE_SKIP_INSTALL_RPATH=ON -D LLVM_ENABLE_RTTI=ON   -D LLVM_INCLUDE_BENCHMARKS=OFF  -D CLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang  -D LLVM_INCLUDE_TESTS=OFF  -D CLANG_DEFAULT_PIE_ON_LINUX=ON  -D CLANG_CONFIG_FILE_SYSTEM_DIR=/etc/clang  -D LLVM_BUILD_LLVM_DYLIB=ON    -D LLVM_LINK_LLVM_DYLIB=ON -G Ninja
 	return $?
