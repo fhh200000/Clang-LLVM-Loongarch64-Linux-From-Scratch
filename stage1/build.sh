@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-round1" "perl-round1"
-	  "python-round1" "texinfo-round1" "util-linux-round1" "cleanup-round1")
+	  "python-round1" "texinfo-round1" "util-linux-round1" "cleanup-round1" "man-pages"
+  	  "iana-etc" "glibc" "zlib-ng" "bzip2" "xz")
 
 source ./settings.sh
 source ../common.sh
