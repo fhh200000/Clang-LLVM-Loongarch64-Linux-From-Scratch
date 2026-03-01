@@ -1,0 +1,20 @@
+diff -r -u -d a/Makeconfig b/Makeconfig
+--- a/Makeconfig       2026-01-23 20:54:00.000000000 +0000
++++ b/Makeconfig     2026-02-26 23:39:34.138578705 +0000
+@@ -736,11 +736,11 @@
+ +prector = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtbegin.o`
+ +postctor = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtend.o`
+ # Variants of the two previous definitions for linking PIE programs.
+-+prectorS = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtbeginS.o`
+-+postctorS = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtendS.o`
+++prectorS = `$(CC) $(sysdep-LDFLAGS) --print-file-name=clang_rt.crtbegin.o`
+++postctorS = `$(CC) $(sysdep-LDFLAGS) --print-file-name=clang_rt.crtend.o`
+ # Variants of the two previous definitions for statically linking programs.
+-static-prector = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtbeginT.o`
+-static-postctor = `$(CC) $(sysdep-LDFLAGS) --print-file-name=crtend.o`
++static-prector = `$(CC) $(sysdep-LDFLAGS) --print-file-name=clang_rt.crtbegin.o`
++static-postctor = `$(CC) $(sysdep-LDFLAGS) --print-file-name=clang_rt.crtend.o`
+ ifeq (yes,$(enable-static-pie))
+ # Static PIE must use PIE variants.
+ +prectorT = $(if $($(@F)-no-pie),$(static-prector),$(+prectorS))
+

@@ -31,7 +31,7 @@ build() {
 }
 
 install() {
-	DESTDIR=/mnt ninja install
+	DESTDIR=${LFS} ninja install
 	ret=$?
 	for name in 'addr2line' 'ar' 'nm' 'objcopy' 'objdump' 'ranlib' 'readelf' 'size' 'strings' 'strip'; do
 		ln -sfv llvm-${name} ${LFS}/usr/bin/${name} 

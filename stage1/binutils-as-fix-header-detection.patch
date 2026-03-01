@@ -1,0 +1,61 @@
+diff -r -u -d binutils-2.45/libiberty/fibheap.c binutils-2.45-2/libiberty/fibheap.c
+--- a/libiberty/fibheap.c   2025-07-26 23:00:00.000000000 +0000
++++ b/libiberty/fibheap.c 2026-03-03 00:17:13.115750822 +0000
+@@ -22,9 +22,7 @@
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+ #endif
+-#ifdef HAVE_LIMITS_H
+ #include <limits.h>
+-#endif
+ #ifdef HAVE_STDLIB_H
+ #include <stdlib.h>
+ #endif
+diff -r -u -d binutils-2.45/libiberty/filedescriptor.c binutils-2.45-2/libiberty/filedescriptor.c
+--- a/libiberty/filedescriptor.c    2025-07-26 23:00:00.000000000 +0000
++++ b/libiberty/filedescriptor.c  2026-03-03 00:17:50.042408853 +0000
+@@ -26,7 +26,7 @@
+ #ifdef HAVE_FCNTL_H
+ #include <fcntl.h>
+ #endif
+-
++#include <unistd.h>
+ #if defined (_WIN32)
+ #define WIN32_LEAN_AND_MEAN
+ #include <windows.h> /* for GetFullPathName */
+diff -r -u -d binutils-2.45/libiberty/pex-unix.c binutils-2.45-2/libiberty/pex-unix.c
+--- a/libiberty/pex-unix.c  2025-07-26 23:00:00.000000000 +0000
++++ b/libiberty/pex-unix.c        2026-03-03 00:19:50.014992869 +0000
+@@ -30,21 +30,15 @@
+ #ifdef NEED_DECLARATION_ERRNO
+ extern int errno;
+ #endif
+-#ifdef HAVE_STDLIB_H
+ #include <stdlib.h>
+-#endif
+ #ifdef HAVE_STRING_H
+ #include <string.h>
+ #endif
+-#ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+-#endif
+
+ #include <sys/types.h>
+
+-#ifdef HAVE_FCNTL_H
+ #include <fcntl.h>
+-#endif
+ #ifdef HAVE_SYS_WAIT_H
+ #include <sys/wait.h>
+ #endif
+@@ -58,9 +52,7 @@
+ #ifdef HAVE_PROCESS_H
+ #include <process.h>
+ #endif
+-#ifdef HAVE_SPAWN_H
+ #include <spawn.h>
+-#endif
+
+ #ifdef vfork /* Autoconf may define this to fork for us. */
+ # define VFORK_STRING "fork"
+
