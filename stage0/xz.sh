@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="5.8.1"
+export SOURCE_VERSION="5.8.2"
 export SOURCE_NAME=xz-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

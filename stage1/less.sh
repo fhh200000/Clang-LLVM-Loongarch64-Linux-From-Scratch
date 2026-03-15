@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="679"
+export SOURCE_VERSION="692"
 export SOURCE_NAME=less-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

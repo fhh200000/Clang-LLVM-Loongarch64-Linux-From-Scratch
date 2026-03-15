@@ -1,0 +1,26 @@
+diff -r -u -d org/compiler-rt/lib/asan/CMakeLists.txt fix/compiler-rt/lib/asan/CMakeLists.txt
+--- org/compiler-rt/lib/asan/CMakeLists.txt	2026-03-09 09:50:30.000000000 +0000
++++ fix/compiler-rt/lib/asan/CMakeLists.txt	2026-03-15 14:23:01.907877086 +0000
+@@ -128,7 +128,7 @@
+ append_list_if(COMPILER_RT_HAS_WNO_FORMAT -Wno-format ASAN_CFLAGS)
+ 
+ set(ASAN_DYNAMIC_LINK_FLAGS ${SANITIZER_COMMON_LINK_FLAGS})
+-
++list(APPEND ASAN_DYNAMIC_LINK_FLAGS "-Wl,--as-needed" "-lc++" "-Wl,--as-needed" "-lc++abi" )
+ if(ANDROID)
+ # Put most Sanitizer shared libraries in the global group. For more details, see
+ # android-changes-for-ndk-developers.md#changes-to-library-search-order
+Only in llvm-project-22.1.1.src-2/compiler-rt/lib/asan: CMakeLists.txt.rej
+diff -r -u -d org/compiler-rt/lib/ubsan/CMakeLists.txt fix/compiler-rt/lib/ubsan/CMakeLists.txt
+--- org/compiler-rt/lib/ubsan/CMakeLists.txt	2026-03-09 09:50:30.000000000 +0000
++++ fix/compiler-rt/lib/ubsan/CMakeLists.txt	2026-03-15 23:05:44.000000000 +0000
+@@ -236,7 +236,8 @@
+                 RTInterception
+                 RTUbsan_dynamic_version_script_dummy
+           CFLAGS ${UBSAN_CFLAGS}
+-          LINK_FLAGS ${UBSAN_LINK_FLAGS} ${VERSION_SCRIPT_FLAG}
++          LINK_FLAGS ${UBSAN_LINK_FLAGS} ${VERSION_SCRIPT_FLAG} "-Wl,--as-needed" "-lc++" "-Wl,--as-needed" "-lc++abi"
++
+           LINK_LIBS ${UBSAN_DYNAMIC_LIBS}
+           PARENT_TARGET ubsan)
+       endforeach()

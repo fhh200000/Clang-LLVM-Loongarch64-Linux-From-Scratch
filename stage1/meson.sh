@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="1.8.3"
+export SOURCE_VERSION="1.10.1"
 export SOURCE_NAME=meson-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

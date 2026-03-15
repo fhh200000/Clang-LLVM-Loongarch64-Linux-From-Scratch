@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="2.45"
+export SOURCE_VERSION="2.46.0"
 export SOURCE_NAME=binutils-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

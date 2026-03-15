@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="3.13.7"
+export SOURCE_VERSION="3.14.3"
 export SOURCE_NAME=Python-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

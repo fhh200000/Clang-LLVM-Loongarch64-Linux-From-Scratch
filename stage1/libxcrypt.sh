@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="4.4.38"
+export SOURCE_VERSION="4.5.2"
 export SOURCE_NAME=libxcrypt-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

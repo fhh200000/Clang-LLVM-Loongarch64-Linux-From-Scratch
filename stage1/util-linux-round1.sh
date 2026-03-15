@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="2.41.1"
+export SOURCE_VERSION="2.41.3"
 export SOURCE_NAME=util-linux-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

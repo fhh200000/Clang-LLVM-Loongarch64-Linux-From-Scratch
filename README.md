@@ -3,12 +3,12 @@ Scripts to build Clang/LLVM-based (No GCC at all) LFS on Loongarch64.
 # Package details
 | Package name | Package version |
 | ----- | ----- |
-| LFS | 12.4 Systemd version |
-| BLFS | 12.4 Systemd version |
-| LLVM | 21.1.8 |
+| LFS | 13.0 Systemd version |
+| BLFS | 13.0 Systemd version |
+| LLVM | 22.1.1 |
 | Glibc | 2.43 |
 | zlib-ng | 2.3.3 |
-| coreutils-rs | 0.6.0 |
+| coreutils-rs | 0.7.0 |
 
 # Build prerequisites
 + Clang/LLVM/LLD
@@ -20,6 +20,7 @@ Scripts to build Clang/LLVM-based (No GCC at all) LFS on Loongarch64.
 + gperf
 + pkgconf
 + Rust
++ wget
 
 # Current status
 + \[x\] Stage 0 (Host compilation)

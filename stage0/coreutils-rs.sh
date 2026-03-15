@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION=0.6.0
+export SOURCE_VERSION=0.7.0
 export SOURCE_NAME=coreutils-rs-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

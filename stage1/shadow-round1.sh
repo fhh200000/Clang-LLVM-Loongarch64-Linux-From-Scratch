@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="4.18.0"
+export SOURCE_VERSION="4.19.3"
 export SOURCE_NAME=shadow-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
@@ -27,6 +27,7 @@ prebuild() {
 		--disable-static    \
 		--with-{b,yes}crypt \
 		--without-libbsd    \
+		--disable-logind    \
 		--with-group-name-max-length=32
 	return $?
 }

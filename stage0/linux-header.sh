@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION=6.16.1
+export SOURCE_VERSION=6.18.10
 export SOURCE_NAME=linux-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

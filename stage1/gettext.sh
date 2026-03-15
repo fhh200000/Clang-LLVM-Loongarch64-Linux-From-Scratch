@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="0.26"
+export SOURCE_VERSION="1.0"
 export SOURCE_NAME=gettext-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

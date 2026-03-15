@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="6.5-20250809"
+export SOURCE_VERSION="6.6-20260314"
 export SOURCE_NAME=ncurses-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

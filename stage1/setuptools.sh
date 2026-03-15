@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="80.9.0"
+export SOURCE_VERSION="82.0.0"
 export SOURCE_NAME=setuptools-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

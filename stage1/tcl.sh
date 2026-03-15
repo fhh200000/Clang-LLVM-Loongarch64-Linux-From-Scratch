@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="8.6.16"
+export SOURCE_VERSION="8.6.17"
 export SOURCE_NAME=tcl${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

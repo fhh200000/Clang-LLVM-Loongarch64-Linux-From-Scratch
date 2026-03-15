@@ -8,7 +8,7 @@ download() {
 	wget https://ftp.gnu.org/gnu/glibc/${SOURCE_NAME}.tar.xz
 	wget https://www.linuxfromscratch.org/patches/lfs/12.4/glibc-2.42-fhs-1.patch
 	tar -xf ${SOURCE_NAME}.tar.xz
-	wget https://www.iana.org/time-zones/repository/releases/tzdata2025b.tar.gz
+	wget https://www.iana.org/time-zones/repository/releases/tzdata2025c.tar.gz
 }
 
 prebuild() {
@@ -63,7 +63,7 @@ install() {
 	# End /etc/nsswitch.conf
 	EOF
 
-	tar -xf ../../tzdata2025b.tar.gz
+	tar -xf ../../tzdata2025c.tar.gz
 
 	ZONEINFO=/usr/share/zoneinfo
 	mkdir -pv $ZONEINFO/{posix,right}

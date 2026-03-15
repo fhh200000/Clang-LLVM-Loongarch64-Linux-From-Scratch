@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="25.0"
+export SOURCE_VERSION="26.0"
 export SOURCE_NAME=packaging-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

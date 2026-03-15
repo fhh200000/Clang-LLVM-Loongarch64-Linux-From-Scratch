@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="2.76"
+export SOURCE_VERSION="2.77"
 export SOURCE_NAME=libcap-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

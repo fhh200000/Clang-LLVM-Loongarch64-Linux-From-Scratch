@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="1.13.1"
+export SOURCE_VERSION="1.13.2"
 export SOURCE_NAME=ninja-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

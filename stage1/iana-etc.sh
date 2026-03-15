@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="20250807"
+export SOURCE_VERSION="20260202"
 export SOURCE_NAME=iana-etc-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

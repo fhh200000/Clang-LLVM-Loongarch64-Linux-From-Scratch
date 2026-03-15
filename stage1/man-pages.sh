@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="6.15"
+export SOURCE_VERSION="6.17"
 export SOURCE_NAME=man-pages-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 

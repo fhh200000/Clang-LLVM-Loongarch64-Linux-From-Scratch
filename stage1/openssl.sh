@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="3.5.2"
+export SOURCE_VERSION="3.6.1"
 export SOURCE_NAME=openssl-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
