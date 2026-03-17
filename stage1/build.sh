@@ -8,7 +8,10 @@ PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-ro
 	  "psmisc" "gettext" "bison" "grep" "bash" "libtool" "gdbm" "gperf" "expat" "inetutils"
 	  "less" "libedit" "sqlite" "xml-parser" "intltool" "autoconf" "automake" "openssl"
 	  "libelf" "libffi" "python" "flit-core" "packaging" "wheel" "setuptools" "ninja"
-	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm")
+	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm" "popt"
+	  "efivar" "efibootmgr" "gzip" "iproute2" "kbd" "libpipeline" "make" "patch" "tar"
+	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "systemd" "d-bus" "man-db" "procps-ng"
+	  "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean")
 
 source ./settings.sh
 source ../common.sh

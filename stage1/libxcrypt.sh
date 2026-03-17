@@ -10,6 +10,7 @@ download() {
 }
 
 prebuild() {
+	sed 's@| mips16 \@| mips16 | loongarch64 \@g' ../build-aux/config.sub
 	LDFLAGS="-Wl,--undefined-version" ../configure --prefix=/usr                \
 		--enable-hashes=strong,glibc \
 		--enable-obsolete-api=no     \
