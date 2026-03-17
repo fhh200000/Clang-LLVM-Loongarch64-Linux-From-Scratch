@@ -11,7 +11,7 @@ PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-ro
 	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm" "popt"
 	  "efivar" "efibootmgr" "gzip" "iproute2" "kbd" "libpipeline" "make" "patch" "tar"
 	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "systemd" "d-bus" "man-db" "procps-ng"
-	  "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean")
+	  "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean" "linux")
 
 source ./settings.sh
 source ../common.sh
