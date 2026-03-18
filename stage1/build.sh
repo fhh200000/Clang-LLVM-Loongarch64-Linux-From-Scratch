@@ -4,14 +4,16 @@ PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-ro
 	  "python-round1" "texinfo-round1" "util-linux-round1" "cmake-round1" "cleanup-round1"
 	  "man-pages" "iana-etc" "glibc" "zlib-ng" "bzip2" "xz" "file" "readline" "m4" "bc"
 	  "flex" "tcl" "expect" "dejagnu" "pkgconf" "binutils-as" "gmp" "mpfr" "mpc" "isl"
-	  "attr" "acl" "libcap" "libxcrypt" "libcrypt1" "shadow-round1" "ncurses" "ncurses5" "sed"
+	  "attr" "acl" "libcap-round1" "libxcrypt" "libcrypt1" "shadow-round1" "ncurses" "ncurses5" "sed"
 	  "psmisc" "gettext" "bison" "grep" "bash" "libtool" "gdbm" "gperf" "expat" "inetutils"
 	  "less" "libedit" "sqlite" "xml-parser" "intltool" "autoconf" "automake" "openssl"
 	  "libelf" "libffi" "python" "flit-core" "packaging" "wheel" "setuptools" "ninja"
 	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm" "popt"
 	  "efivar" "efibootmgr" "gzip" "iproute2" "kbd" "libpipeline" "make" "patch" "tar"
-	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "systemd" "d-bus" "man-db" "procps-ng"
-	  "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean" "linux")
+	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "systemd-round1" "d-bus" "man-db"
+	  "procps-ng" "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean" "linux"
+	  "perl-net-ssleay" "perl-mime-base32" "perl-uri" "perl-io-socket-ssl" "libevent"
+	  "rpcsvc-proto" "libtirpc" "libnsl" "linux-pam" "shadow" "libcap")
 
 source ./settings.sh
 source ../common.sh

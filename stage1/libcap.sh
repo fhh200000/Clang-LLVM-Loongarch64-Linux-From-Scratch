@@ -10,25 +10,29 @@ download() {
 }
 
 prebuild() {
-	pushd ..
-	sed -i '/install -m.*STA/d' libcap/Makefile
-	sed -i 's/gcc/cc/g' Make.Rules
-	popd
 	return $?
 }
 
 build() {
 	pushd ..
-        CC=cc CXX=c++ make -j$(nproc) prefix=/usr lib=lib
+        CC=cc CXX=c++ make -C pam_cap -j$(nproc) prefix=/usr lib=lib
 	popd
 	return $?
 }
 
 install() {
 	pushd ..
-        CC=cc CXX=c++ make prefix=/usr lib=lib install
+	/usr/bin/install -v -m755 pam_cap/pam_cap.so      /usr/lib/security
+	/usr/bin/install -v -m644 pam_cap/capability.conf /etc/security
 	ret=$?
 	popd
+	mv -v /etc/pam.d/system-auth{,.bak}
+	cat > /etc/pam.d/system-auth <<- "EOF"
+	# Begin /etc/pam.d/system-auth
+
+	auth      optional    pam_cap.so
+	EOF
+	tail -n +3 /etc/pam.d/system-auth.bak >> /etc/pam.d/system-auth
 	return $ret
 }
 

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+export SOURCE_VERSION="1.4.4"
+export SOURCE_NAME=rpcsvc-proto-${SOURCE_VERSION}
+export SCRIPT_DIR=$(pwd)
+
+download() {
+	wget  https://github.com/thkukuk/rpcsvc-proto/releases/download/v${SOURCE_VERSION}/${SOURCE_NAME}.tar.xz
+	tar -xf ${SOURCE_NAME}.tar.xz
+	pushd ${SOURCE_NAME}
+	rm -rf config.guess config.sub
+	wget "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess" -O config.guess
+	wget "https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub"  -O config.sub
+	popd
+}
+
+prebuild() {
+	../configure --sysconfdir=/etc
+	return $?
+}
+
+build() {
+        make -j$(nproc)
+	return $?
+}
+
+install() {
+        make install
+	ret=$?
+	return $ret
+}
+
