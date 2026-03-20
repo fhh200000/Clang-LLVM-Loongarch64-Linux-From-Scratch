@@ -17,7 +17,7 @@ prebuild() {
 	find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
 	sed -e 's:#ENCRYPT_METHOD DES:ENCRYPT_METHOD YESCRYPT:' \
 		-e 's:/var/spool/mail:/var/mail:'                   \
-		-e '/PATH=/{s@/sbin:@@;s@/bin:@@}'                  \
+		-e 's@PATH=.\+@PATH=/usr/bin@g'   \
 		-i etc/login.defs
 	popd
 	touch /usr/bin/passwd
