@@ -11,9 +11,9 @@ PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-ro
 	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm" "popt"
 	  "efivar" "efibootmgr" "gzip" "iproute2" "kbd" "libpipeline" "make" "patch" "tar"
 	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "pyelftools" "systemd-round1" "d-bus" "man-db"
-	  "procps-ng" "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean" "linux"
-	  "perl-net-ssleay" "perl-mime-base32" "perl-uri" "perl-io-socket-ssl" "libevent"
-	  "rpcsvc-proto" "libtirpc" "libnsl" "linux-pam" "shadow" "libcap")
+	  "procps-ng" "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "linux" "perl-net-ssleay"
+	  "perl-mime-base32" "perl-uri" "perl-io-socket-ssl" "libevent" "rpcsvc-proto" "libtirpc"
+	  "libnsl" "linux-pam" "shadow" "libcap" "dropbear" "remove-debug" "clean")
 
 source ./settings.sh
 source ../common.sh
