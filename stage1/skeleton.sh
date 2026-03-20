@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SOURCE_VERSION="12.4"
+export SOURCE_VERSION="13.0"
 export SOURCE_NAME=skeleton-${SOURCE_VERSION}
 export SCRIPT_DIR=$(pwd)
 
@@ -101,6 +101,14 @@ install() {
 	chmod -v 664  /var/log/lastlog
 	chmod -v 600  /var/log/btmp
 
+	echo "NAME=\"Linux From Scratch\"" > /etc/os-release
+	echo "VERSION=${SOURCE_VERSION}" >> /etc/os-release
+	echo "ID=lfs" >> /etc/os-release
+	echo "VERSION_ID=${SOURCE_VERSION}" >> /etc/os-release
+	echo "PRETTY_NAME=\"Linux From Scratch ${SOURCE_VERSION}\"" >> /etc/os-release
+	echo "HOME_URL=\"https://www.linuxfromscratch.org\"" >> /etc/os-release
+	echo "BUG_REPORT_URL=\"https://www.linuxfromscratch.org/lfs/errata/${SOURCE_VERSION}-systemd\"" >> /etc/os-release
+	ln -sfv /etc/os-release /usr/lib/os-release
 	return 0
 }
 

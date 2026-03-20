@@ -10,7 +10,7 @@ PACKAGES=("skeleton" "update-ca-round1" "bash-round1" "gettext-round1" "bison-ro
 	  "libelf" "libffi" "python" "flit-core" "packaging" "wheel" "setuptools" "ninja"
 	  "meson" "kmod" "diffutils" "gawk" "findutils" "groff" "libxml" "icu" "llvm" "popt"
 	  "efivar" "efibootmgr" "gzip" "iproute2" "kbd" "libpipeline" "make" "patch" "tar"
-	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "systemd-round1" "d-bus" "man-db"
+	  "texinfo" "vim" "markupsafe" "jinja2" "pefile" "pyelftools" "systemd-round1" "d-bus" "man-db"
 	  "procps-ng" "util-linux" "e2fsprogs" "lzo" "btrfs-progs" "remove-debug" "clean" "linux"
 	  "perl-net-ssleay" "perl-mime-base32" "perl-uri" "perl-io-socket-ssl" "libevent"
 	  "rpcsvc-proto" "libtirpc" "libnsl" "linux-pam" "shadow" "libcap")

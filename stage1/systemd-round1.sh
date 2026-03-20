@@ -29,6 +29,7 @@ prebuild() {
 		-D dev-kvm-mode=0660    \
 		-D nobody-group=nogroup \
 		-D sysupdate=disabled   \
+		-D bootloader=enabled   \
 		-D docdir=/usr/share/doc/systemd-259.1
 	return $?
 }
