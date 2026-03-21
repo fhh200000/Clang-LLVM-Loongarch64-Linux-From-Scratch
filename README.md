@@ -25,5 +25,5 @@ Scripts to build Clang/LLVM-based (No GCC at all) LFS on Loongarch64.
 # Current status
 + \[x\] Stage 0 (Host compilation)
 + \[x\] Chroot
-+ \[ \] Stage 1 (Chroot compilation)
-+ \[ \] Boot into LFS
++ \[x\] Stage 1 (Chroot compilation)
++ \[x\] Boot into LFS
