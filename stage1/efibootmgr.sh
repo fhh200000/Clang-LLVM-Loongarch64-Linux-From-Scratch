@@ -8,9 +8,7 @@ download() {
 }
 
 prebuild() {
-	pushd ..
-	patch -Np1 -i ../efivar-39-upstream_fixes-1.patch
-	popd
+	return 0
 }
 
 build() {
